@@ -1,9 +1,5 @@
 package jni
 
-//GetVersion returns the major version number in
-//the higher 16 bits and the minor version in the
-//lower 16 bits.
-
 //Version represents the jni version, e.g. 1.1, 1.2.
 //The major version is stored in the higher 16 bits,
 //and the minor version is in the lower 16.
