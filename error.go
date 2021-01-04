@@ -12,7 +12,7 @@ func (e ErrorCode) String() string {
 		return "unknown"
 
 	case Detached:
-		return "thread detached from vm"
+		return "thread detached from jvm"
 
 	case WrongVersion:
 		return "wrong version"
