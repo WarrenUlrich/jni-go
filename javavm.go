@@ -1,7 +1,7 @@
 package jni
 
 /*
-	#include "jvm_wrapper.h"
+	#include "jni_wrapper.h"
 */
 import "C"
 
@@ -24,7 +24,7 @@ type JavaVM struct {
 func (j *JavaVM) AttachCurrentThread() (Environment, error) {
 	var env unsafe.Pointer
 
-	res := C.jvm_attach_current_thread(j.pointer, &env)
+	res := C.jni_attach_current_thread(j.pointer, &env)
 
 	if res != 0 {
 		return Environment{}, &Error{Code: ErrorCode(res)}
@@ -38,7 +38,7 @@ func (j *JavaVM) AttachCurrentThread() (Environment, error) {
 //threads waiting for this thread to die are notified.
 func (j *JavaVM) DetachCurrentThread() error {
 
-	res := C.jvm_detach_current_thread(j.pointer)
+	res := C.jni_detach_current_thread(j.pointer)
 
 	if res != 0 {
 		return Error{Code: ErrorCode(res)}
@@ -51,7 +51,7 @@ func (j *JavaVM) DetachCurrentThread() error {
 func (j *JavaVM) GetEnvironment(version Version) (Environment, error) {
 	var env unsafe.Pointer
 
-	res := C.jvm_get_environment(j.pointer, &env, C.int(version))
+	res := C.jni_get_env(j.pointer, &env, C.int(version))
 
 	if res != 0 {
 		return Environment{}, &Error{Code: ErrorCode(res)}
@@ -69,7 +69,7 @@ func (j *JavaVM) GetEnvironment(version Version) (Environment, error) {
 func (j *JavaVM) AttachCurrentThreadAsDaemon() (Environment, error) {
 	var env unsafe.Pointer
 
-	res := C.jvm_attach_current_thread_as_daemon(j.pointer, &env)
+	res := C.jni_attach_current_thread_as_daemon(j.pointer, &env)
 
 	if res != 0 {
 		return Environment{}, &Error{Code: ErrorCode(res)}

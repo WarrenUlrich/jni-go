@@ -1,13 +1,13 @@
 package jni
 
 /*
-	#cgo 386 CFLAGS: -IC/ -IC/openjdk8-win32/include -IC/openjdk8-win32/include/win32
-	#cgo 386 LDFLAGS: -L/C/openjdk8-win32/lib -ljvm
+	#cgo 386 CFLAGS: -I/openjdk/openjdk8-win32/include -Iopenjdk/openjdk8-win32/include/win32
+	#cgo 386 LDFLAGS: -L/openjdk/openjdk8-win32/lib -ljvm
 
-	#cgo amd64 CFLAGS: -IC/openjdk8-win64/include -IC/openjdk8-win64/include/win32
-	#cgo amd64 LDFLAGS: -L/C/openjdk8-win64/lib -ljvm
+	#cgo amd64 CFLAGS: -I/openjdk/openjdk8-win64/include -Iopenjdk/openjdk8-win64/include/win32
+	#cgo amd64 LDFLAGS: -L/openjdk/openjdk8-win64/lib -ljvm
 
-	#include "jvm_wrapper.h"
+	#include "jni_wrapper.h"
 */
 import "C"
 
@@ -17,7 +17,7 @@ import "unsafe"
 func GetCreatedVM() (JavaVM, error) {
 	var jvm unsafe.Pointer
 
-	res := C.jvm_get_created_vm(&jvm)
+	res := C.jni_get_created_jvm(&jvm)
 
 	if res != 0 {
 		return JavaVM{}, &Error{Code: ErrorCode(res)}

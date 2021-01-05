@@ -1,7 +1,7 @@
 #pragma once
 #include <jni.h>
 
-//For ease
+#define JVM void*
 #define JENV void*
 #define JOBJECT void*
 #define JCLASS void*
@@ -9,15 +9,29 @@
 #define JMETHODID void*
 #define JFIELDID void*
 
+int jni_get_created_jvm(JVM* jvm_buf);
+
+//JavaVM functions
+int jni_attach_current_thread(JVM jvm, JENV* env_buf);
+
+int jni_detach_current_thread(JVM jvm);
+
+int jni_get_env(JVM jvm, JENV* env_buf, int version);
+
+int jni_attach_current_thread_as_daemon(JVM jvm, JENV* env_buf);
+
+//JNIEnv functions
 int jni_get_version(JENV env);
 
-JCLASS jni_define_class(JENV env, const char* name, JOBJECT loader, void* buf);
+JCLASS jni_define_class(JENV env, const char* name, JOBJECT loader, void* buf, int len);
 
 JCLASS jni_find_class(JENV env, const char* name);
 
 JMETHODID jni_from_reflected_method(JENV env, JOBJECT method);
 
 JFIELDID jni_from_reflected_field(JENV env, JOBJECT field);
+
+JOBJECT jni_to_reflected_method(JENV env, JCLASS cls, JMETHODID method_id, unsigned char is_static);
 
 JCLASS jni_get_super_class(JENV env, JCLASS sub);
 
