@@ -1,63 +1,52 @@
 package jni
 
-//ErrorCode represents a jni error code.
-type ErrorCode int
+import "errors"
 
-func (e ErrorCode) String() string {
-	switch e {
-	case Ok:
-		return "ok"
+var(
+	//ErrUnknown means an error occured but the type is unknown.
+	ErrUnknown = errors.New("unknown")
 
-	case Unknown:
-		return "unknown"
+	//ErrDetached means the calling thread is detached from the JVM.
+	ErrDetached = errors.New("thread detached")
 
-	case Detached:
-		return "thread detached from jvm"
+	//ErrWrongVersion means the feature is unsupported on the current JNI Version
+	ErrWrongVersion = errors.New("unsupported version")
 
-	case WrongVersion:
-		return "wrong version"
+	//ErrOutOfMemory means the JVM is out of memory
+	ErrOutOfMemory = errors.New("out of memory")
 
-	case OutOfMemory:
-		return "out of memory"
-
-	case VMExists:
-		return "vm already created"
-
-	case InvalidArgs:
-		return "invalid args"
-	}
-
-	return ""
-}
-
-const (
-	//Ok means no error occured.
-	Ok ErrorCode = 0
-
-	//Unknown means an error occured, but the type is unknown.
-	Unknown ErrorCode = -1
-
-	//Detached means the current thread is detached from the JVM.
-	Detached ErrorCode = -2
-
-	//WrongVersion means the function is not supported on the current version.
-	WrongVersion ErrorCode = -3
-
-	//OutOfMemory means the JVM is out of memory.
-	OutOfMemory ErrorCode = -4
-
-	//VMExists means a VM is already created.
-	VMExists ErrorCode = -5
-
-	//InvalidArgs means invalid arguments were passed to the function.
-	InvalidArgs ErrorCode = -6
+	//ErrInvalidArgs means the function was called in invalid arguments.
+	ErrInvalidArgs = errors.New("invalid arguments")
 )
 
-//Error represents a jni error.
-type Error struct {
-	Code ErrorCode
-}
+const(
+	ok int = 0
+	unknown int = -1
+	detached int = -2
+	version int = -3
+	outofmemory int = -4
+	invalidargs int = -5
+)
 
-func (e Error) Error() string {
-	return e.Code.String()
+func jniErrorFromCode(code int) error {
+	switch code {
+	case ok:
+		return nil
+
+	case unknown:
+		return ErrUnknown
+
+	case detached:
+		return ErrDetached
+
+	case version:
+		return ErrWrongVersion
+
+	case outofmemory:
+		return ErrOutOfMemory
+
+	case invalidargs:
+		return ErrInvalidArgs
+	}
+	return nil
 }

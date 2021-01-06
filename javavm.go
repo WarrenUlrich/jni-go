@@ -26,25 +26,16 @@ func (j *JavaVM) AttachCurrentThread() (Environment, error) {
 
 	res := C.jni_attach_current_thread(j.pointer, &env)
 
-	if res != 0 {
-		return Environment{}, &Error{Code: ErrorCode(res)}
-	}
-
-	return Environment{env}, nil
+	return Environment{env}, jniErrorFromCode(int(res))
 }
 
 //DetachCurrentThread detaches the thread from the JavaVM.
 //All monitors held by this thread are released. All Java
 //threads waiting for this thread to die are notified.
 func (j *JavaVM) DetachCurrentThread() error {
-
 	res := C.jni_detach_current_thread(j.pointer)
 
-	if res != 0 {
-		return Error{Code: ErrorCode(res)}
-	}
-
-	return nil
+	return jniErrorFromCode(int(res))
 }
 
 //GetEnvironment returns the jni environment interface for this VM.
@@ -53,11 +44,7 @@ func (j *JavaVM) GetEnvironment(version Version) (Environment, error) {
 
 	res := C.jni_get_env(j.pointer, &env, C.int(version))
 
-	if res != 0 {
-		return Environment{}, &Error{Code: ErrorCode(res)}
-	}
-
-	return Environment{env}, nil
+	return Environment{env}, jniErrorFromCode(int(res))
 }
 
 //GetJvmtiEnvironment ...
@@ -71,9 +58,5 @@ func (j *JavaVM) AttachCurrentThreadAsDaemon() (Environment, error) {
 
 	res := C.jni_attach_current_thread_as_daemon(j.pointer, &env)
 
-	if res != 0 {
-		return Environment{}, &Error{Code: ErrorCode(res)}
-	}
-
-	return Environment{env}, nil
+	return Environment{env}, jniErrorFromCode(int(res))
 }

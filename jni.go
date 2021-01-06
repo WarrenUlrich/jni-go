@@ -19,9 +19,5 @@ func GetCreatedVM() (JavaVM, error) {
 
 	res := C.jni_get_created_jvm(&jvm)
 
-	if res != 0 {
-		return JavaVM{}, &Error{Code: ErrorCode(res)}
-	}
-
-	return JavaVM{jvm}, nil
+	return JavaVM{jvm}, jniErrorFromCode(int(res))
 }
