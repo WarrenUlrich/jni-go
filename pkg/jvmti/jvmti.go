@@ -54,7 +54,11 @@ func GetLoadedClasses() ([]*jni.Class, error) {
 
 	//Create global refs and delete the local ones.
 	for i, c := range temp {
-		result[i] = (*jni.Class)(jni.NewGlobalRef(jni.Object(c)))
+		cls, err := jni.NewGlobalRef(jni.Object(c))
+		if err != nil {
+			return nil, err
+		}
+		result[i] = (*jni.Class)(cls)
 		jni.DeleteLocalRef(jni.Object(c))
 	}
 	

@@ -4,11 +4,11 @@ package jni
 type String Object
 
 //Length ...
-func (s String) Length() int {
+func (s String) Length() (int, error) {
 	return GetStringLength(s)
 }
 
 //String ...
-func (s String) String() string {
+func (s String) GetString() (string, error) {
 	return GetStringChars(s)
 }
