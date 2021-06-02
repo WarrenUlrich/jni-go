@@ -7,6 +7,7 @@ package internal
 import "C"
 import (
 	"errors"
+	"fmt"
 	"unsafe"
 )
 
@@ -52,6 +53,7 @@ func GetClassSignature(env *JVMTIEnvironment, cls Class) (string, string, error)
 
 	jvmtiErr := C.jvmti_get_class_signature(env, cls, &csig, &cgeneric)
 	if jvmtiErr != C.JVMTI_ERROR_NONE {
+		fmt.Println("err: ", jvmtiErr)
 		return "", "", errors.New("jvmti failed to get class signature")
 	}
 	var sig string

@@ -57,7 +57,7 @@ func GetLoadedClasses() ([]*jni.Class, error) {
 		result[i] = (*jni.Class)(jni.NewGlobalRef(jni.Object(c)))
 		jni.DeleteLocalRef(jni.Object(c))
 	}
-
+	
 	internal.Deallocate(jvmtiEnv, unsafe.Pointer(&temp[0]))
 	return result, nil
 }
