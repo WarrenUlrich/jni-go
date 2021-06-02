@@ -43,8 +43,11 @@ func initEnv() error {
 
 //GetLoadedClasses ...
 func GetLoadedClasses() ([]*jni.Class, error) {
-	initEnv()
-
+	err := initEnv()
+	if err != nil {
+		return nil, err
+	}
+	
 	temp, err := internal.GetLoadedClasses(jvmtiEnv)
 	if err != nil {
 		return nil, err
