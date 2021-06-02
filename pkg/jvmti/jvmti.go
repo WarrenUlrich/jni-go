@@ -18,21 +18,21 @@ type classKey struct {
 }
 
 var (
-	javaVM   *internal.JavaVM
+	JVM   *internal.JavaVM
 	jvmtiEnv *internal.JVMTIEnvironment
 
 	classCache map[classKey]*jni.Class = make(map[classKey]*jni.Class)
 )
 
 func initEnv() error {
-	if javaVM == nil {
+	if JVM == nil {
 		vm, err := internal.GetCreatedVM()
 		if err != nil {
 			return err
 		}
-		javaVM = vm
+		JVM = vm
 
-		env, err := internal.GetJVMTIEnv(vm)
+		env, err := internal.GetJVMTIEnv(jni.JVM)
 		if err != nil {
 			return err
 		}
@@ -47,7 +47,7 @@ func GetLoadedClasses() ([]*jni.Class, error) {
 	if err != nil {
 		return nil, err
 	}
-	
+
 	temp, err := internal.GetLoadedClasses(jvmtiEnv)
 	if err != nil {
 		return nil, err

@@ -18,18 +18,18 @@ type fieldCacheKey struct {
 }
 
 var (
-	//JavaVM ...
-	javaVM      *internal.JavaVM
+	//JVM ...
+	JVM      *internal.JavaVM
 	classCache  map[string]*Class           = make(map[string]*Class)
 	methodCache map[methodCacheKey]MethodID = make(map[methodCacheKey]MethodID)
 	fieldCache  map[fieldCacheKey]FieldID   = make(map[fieldCacheKey]FieldID)
 )
 
 func getEnvironment() *internal.JNIEnvironment {
-	env, err := internal.GetEnv(javaVM)
+	env, err := internal.GetEnv(JVM)
 	if err != nil {
 		if err == internal.ErrDetached {
-			env, _ = internal.AttachCurrentThread(javaVM)
+			env, _ = internal.AttachCurrentThread(JVM)
 		}
 	}
 
@@ -37,10 +37,10 @@ func getEnvironment() *internal.JNIEnvironment {
 }
 
 func getThreadLocalEnvironment() (*internal.JNIEnvironment, error) {
-	env, err := internal.GetEnv(javaVM)
+	env, err := internal.GetEnv(JVM)
 	if err != nil {
 		if err == internal.ErrDetached {
-			env, err = internal.AttachCurrentThread(javaVM)
+			env, err = internal.AttachCurrentThread(JVM)
 			if err != nil {
 				return nil, err
 			}
@@ -61,8 +61,8 @@ func InitializeFromCreatedVM() error {
 		return err
 	}
 
-	javaVM = jvm
-	_, err = internal.AttachCurrentThread(javaVM)
+	JVM = jvm
+	_, err = internal.AttachCurrentThread(JVM)
 	if err != nil {
 		return err
 	}
