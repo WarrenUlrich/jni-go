@@ -74,7 +74,7 @@ func (c Class) GetStaticBooleanField(id FieldID) (bool, error) {
 	return GetStaticBooleanField(c, id)
 }
 
-//GetSTaticByteField ...
+//GetStaticByteField ...
 func (c Class) GetStaticByteField(id FieldID) (byte, error) {
 	return GetStaticByteField(c, id)
 }
@@ -109,7 +109,7 @@ func (c Class) GetStaticDoubleField(id FieldID) (float64, error) {
 	return GetStaticDoubleField(c, id)
 }
 
-//SetSTaticObjectField ...
+//SetStaticObjectField ...
 func (c Class) SetStaticObjectField(id FieldID, val Object) error {
 	return SetStaticObjectField(c, id, val)
 }
