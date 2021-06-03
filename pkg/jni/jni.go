@@ -25,17 +25,6 @@ var (
 	fieldCache  map[fieldCacheKey]FieldID   = make(map[fieldCacheKey]FieldID)
 )
 
-func getEnvironment() *internal.JNIEnvironment {
-	env, err := internal.GetEnv(JVM)
-	if err != nil {
-		if err == ErrDetached {
-			env, _ = internal.AttachCurrentThread(JVM)
-		}
-	}
-
-	return env
-}
-
 func getThreadLocalEnvironment() (*internal.JNIEnvironment, error) {
 	env, err := internal.GetEnv(JVM)
 	if err != nil {
@@ -576,12 +565,17 @@ func GetShortField(obj Object, id FieldID) (int16, error) {
 }
 
 //GetIntField ...
-func GetIntField(obj Object, id FieldID) int {
+func GetIntField(obj Object, id FieldID) (int, error) {
+	localEnv, err := getThreadLocalEnvironment()
+	if err != nil {
+		return 0, err
+	}
+
 	return internal.GetIntField(
-		getEnvironment(),
+		localEnv,
 		internal.Object(obj),
 		internal.FieldID(id),
-	)
+	), nil
 }
 
 //GetLongField ...
@@ -1051,6 +1045,34 @@ func GetStaticIntField(cls Class, id FieldID) (int, error) {
 	), nil
 }
 
+//GetStaticLongField ...
+func GetStaticLongField(cls Class, id FieldID) (int64, error) {
+	localEnv, err := getThreadLocalEnvironment()
+	if err != nil {
+		return 0, err
+	}
+
+	return internal.GetStaticLongField(
+		localEnv,
+		(internal.Class)(cls),
+		(internal.FieldID)(id),
+	), nil
+}
+
+//GetStaticFloatField
+func GetStaticFloatField(cls Class, id FieldID) (float32, error) {
+	localEnv, err := getThreadLocalEnvironment()
+	if err != nil {
+		return 0, err
+	}
+
+	return internal.GetStaticFloatField(
+		localEnv,
+		(internal.Class)(cls),
+		(internal.FieldID)(id),
+	), nil
+}
+
 //GetStaticDoubleField ...
 func GetStaticDoubleField(cls Class, id FieldID) (float64, error) {
 	localEnv, err := getThreadLocalEnvironment()
@@ -1157,6 +1179,23 @@ func SetStaticIntField(cls Class, id FieldID, val int) error {
 	}
 
 	internal.SetStaticIntField(
+		localEnv,
+		internal.Class(cls),
+		internal.FieldID(id),
+		val,
+	)
+
+	return nil
+}
+
+//SetStaticLongField ...
+func SetStaticLongField(cls Class, id FieldID, val int64) error {
+	localEnv, err := getThreadLocalEnvironment()
+	if err != nil {
+		return err
+	}
+
+	internal.SetStaticLongField(
 		localEnv,
 		internal.Class(cls),
 		internal.FieldID(id),
