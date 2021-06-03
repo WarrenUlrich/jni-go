@@ -8,8 +8,8 @@ package internal
 import "C"
 
 import (
-	"unsafe"
 	"syscall"
+	"unsafe"
 )
 
 //JavaVM ...
@@ -79,6 +79,7 @@ func GetCreatedVM() (*JavaVM, error) {
 func AttachCurrentThread(jvm *JavaVM) (*JNIEnvironment, error) {
 	var env unsafe.Pointer
 	res := C.jni_attach_current_thread(jvm, &env, nil)
+
 	return (*JNIEnvironment)(env), jniErrorFromCode(int(res))
 }
 

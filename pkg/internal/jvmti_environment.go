@@ -26,6 +26,7 @@ func GetLoadedClasses(env *JVMTIEnvironment) ([]Class, error) {
 	jvmtiErr := C.jvmti_get_loaded_classes(env, &count, &buf)
 
 	if jvmtiErr != C.JVMTI_ERROR_NONE {
+		fmt.Println(jvmtiErr)
 		return nil, errors.New("failed to get loaded classes")
 	}
 

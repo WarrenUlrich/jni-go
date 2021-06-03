@@ -6,8 +6,8 @@ package jvmti
 import "C"
 
 import (
-	"unsafe"
 	"errors"
+	"unsafe"
 	"github.com/warrenulrich/jni-go/pkg/internal"
 	"github.com/warrenulrich/jni-go/pkg/jni"
 )
@@ -18,37 +18,39 @@ type classKey struct {
 }
 
 var (
-	JVM   *internal.JavaVM
-	jvmtiEnv *internal.JVMTIEnvironment
-
 	classCache map[classKey]*jni.Class = make(map[classKey]*jni.Class)
 )
 
-func initEnv() error {
-	if JVM == nil {
-		vm, err := internal.GetCreatedVM()
-		if err != nil {
-			return err
-		}
-		JVM = vm
+func getThreadLocalEnvironment() (*internal.JVMTIEnvironment, error) {
+	internal.AttachCurrentThread(jni.JVM) // Why do I need to call this here to prevent a crash?
+	res, err := internal.GetJVMTIEnv(jni.JVM)
 
-		env, err := internal.GetJVMTIEnv(jni.JVM)
-		if err != nil {
-			return err
+	if err != nil {
+		if err == internal.ErrDetached {
+			_, err = internal.AttachCurrentThread(jni.JVM)
+			if err != nil {
+				return nil, err
+			}
+
+			res, err := internal.GetJVMTIEnv(jni.JVM)
+			if err != nil {
+				return nil, err
+			}
+			return res, nil
 		}
-		jvmtiEnv = env
 	}
-	return nil
+
+	return res, nil
 }
 
 //GetLoadedClasses ...
 func GetLoadedClasses() ([]*jni.Class, error) {
-	err := initEnv()
+	localEnv, err := getThreadLocalEnvironment()
 	if err != nil {
 		return nil, err
 	}
 
-	temp, err := internal.GetLoadedClasses(jvmtiEnv)
+	temp, err := internal.GetLoadedClasses(localEnv)
 	if err != nil {
 		return nil, err
 	}
@@ -65,7 +67,7 @@ func GetLoadedClasses() ([]*jni.Class, error) {
 		jni.DeleteLocalRef(jni.Object(c))
 	}
 	
-	internal.Deallocate(jvmtiEnv, unsafe.Pointer(&temp[0]))
+	internal.Deallocate(localEnv, unsafe.Pointer(&temp[0]))
 	return result, nil
 }
 
@@ -99,10 +101,10 @@ func GetLoadedClass(sig, gen string) (*jni.Class, error) {
 
 //GetClassSignature ...
 func GetClassSignature(cls jni.Class) (string, string, error) {
-	err := initEnv()
+	localEnv, err := getThreadLocalEnvironment()
 	if err != nil {
 		return "", "", err
 	}
 
-	return internal.GetClassSignature(jvmtiEnv, internal.Class(cls))
+	return internal.GetClassSignature(localEnv, internal.Class(cls))
 }

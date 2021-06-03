@@ -28,7 +28,7 @@ var (
 func getEnvironment() *internal.JNIEnvironment {
 	env, err := internal.GetEnv(JVM)
 	if err != nil {
-		if err == internal.ErrDetached {
+		if err == ErrDetached {
 			env, _ = internal.AttachCurrentThread(JVM)
 		}
 	}
@@ -39,7 +39,7 @@ func getEnvironment() *internal.JNIEnvironment {
 func getThreadLocalEnvironment() (*internal.JNIEnvironment, error) {
 	env, err := internal.GetEnv(JVM)
 	if err != nil {
-		if err == internal.ErrDetached {
+		if err == ErrDetached {
 			env, err = internal.AttachCurrentThread(JVM)
 			if err != nil {
 				return nil, err

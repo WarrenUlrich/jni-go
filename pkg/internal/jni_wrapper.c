@@ -1,7 +1,9 @@
 #include "jni_wrapper.h"
+#include <windows.h>
 
 int jni_destroy_java_vm(JavaVM* vm)
 {
+    
     return (*vm)->DestroyJavaVM(vm);
 }
 
@@ -12,6 +14,7 @@ int jni_attach_current_thread(JavaVM* vm, void** env_buf, void* args)
 
 int jni_detach_current_thread(JavaVM* vm)
 {
+    
     return (*vm)->DetachCurrentThread(vm);
 }
 
