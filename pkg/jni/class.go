@@ -59,6 +59,11 @@ func (c Class) CallStaticDoubleMethod(id MethodID, args ...interface{}) (float64
 	return CallStaticDoubleMethod(c, id, args...)
 }
 
+//GetFieldID ...
+func (c Class) GetFieldID(name, sig string) (FieldID, error) {
+	return GetFieldID(c, name, sig)
+}
+
 //GetStaticFieldID ...
 func (c Class) GetStaticFieldID(name, sig string) (FieldID, error) {
 	return GetStaticFieldID(c, name, sig)
