@@ -104,9 +104,9 @@ func CallShortMethod(env *JNIEnvironment, obj Object, id MethodID, args ...inter
 }
 
 //CallIntMethod ...
-func CallIntMethod(env *JNIEnvironment, obj Object, id MethodID, args ...interface{}) int {
+func CallIntMethod(env *JNIEnvironment, obj Object, id MethodID, args ...interface{}) int32 {
 	values := toValues(args...)
-	return int(C.jni_call_int_method(env, obj, id, &values[0]))
+	return int32(C.jni_call_int_method(env, obj, id, &values[0]))
 }
 
 //CallLongMethod ...
@@ -164,9 +164,9 @@ func CallNonVirtualShortMethod(env *JNIEnvironment, obj Object, cls Class, id Me
 }
 
 //CallNonVirtualIntMethod ...
-func CallNonVirtualIntMethod(env *JNIEnvironment, obj Object, cls Class, id MethodID, args ...interface{}) int {
+func CallNonVirtualIntMethod(env *JNIEnvironment, obj Object, cls Class, id MethodID, args ...interface{}) int32 {
 	values := toValues(args...)
-	return int(C.jni_call_non_virtual_int_method(env, obj, cls, id, &values[0]))
+	return int32(C.jni_call_non_virtual_int_method(env, obj, cls, id, &values[0]))
 }
 
 //CallNonVirtualLongMethod ...
@@ -223,8 +223,8 @@ func GetShortField(env *JNIEnvironment, obj Object, id FieldID) int16 {
 }
 
 //GetIntField ...
-func GetIntField(env *JNIEnvironment, obj Object, id FieldID) int {
-	return int(C.jni_get_int_field(env, obj, id))
+func GetIntField(env *JNIEnvironment, obj Object, id FieldID) int32 {
+	return int32(C.jni_get_int_field(env, obj, id))
 }
 
 //GetLongField ...
@@ -268,7 +268,7 @@ func SetShortField(env *JNIEnvironment, obj Object, id FieldID, val int16) {
 }
 
 //SetIntField ...
-func SetIntField(env *JNIEnvironment, obj Object, id FieldID, val int) {
+func SetIntField(env *JNIEnvironment, obj Object, id FieldID, val int32) {
 	C.jni_set_int_field(env, obj, id, C.long(val))
 }
 
@@ -330,9 +330,9 @@ func CallStaticShortMethod(env *JNIEnvironment, cls Class, id MethodID, args ...
 }
 
 //CallStaticIntMethod ...
-func CallStaticIntMethod(env *JNIEnvironment, cls Class, id MethodID, args ...interface{}) int {
+func CallStaticIntMethod(env *JNIEnvironment, cls Class, id MethodID, args ...interface{}) int32 {
 	values := toValues(args...)
-	return int(C.jni_call_static_int_method(env, cls, id, &values[0]))
+	return int32(C.jni_call_static_int_method(env, cls, id, &values[0]))
 }
 
 //CallStaticLongMethod ...
@@ -396,8 +396,8 @@ func GetStaticShortField(env *JNIEnvironment, cls Class, id FieldID) int16 {
 }
 
 //GetStaticIntField ...
-func GetStaticIntField(env *JNIEnvironment, cls Class, id FieldID) int {
-	return int(C.jni_get_static_int_field(env, cls, id))
+func GetStaticIntField(env *JNIEnvironment, cls Class, id FieldID) int32 {
+	return int32(C.jni_get_static_int_field(env, cls, id))
 }
 
 //GetStaticLongField ...
@@ -441,7 +441,7 @@ func SetStaticShortField(env *JNIEnvironment, cls Class, id FieldID, val int16) 
 }
 
 //SetStaticIntField ...
-func SetStaticIntField(env *JNIEnvironment, cls Class, id FieldID, val int) {
+func SetStaticIntField(env *JNIEnvironment, cls Class, id FieldID, val int32) {
 	C.jni_set_static_int_field(env, cls, id, C.jint(val))
 }
 
@@ -595,14 +595,14 @@ func GetShortArrayElements(env *JNIEnvironment, arr ShortArray) []int16 {
 }
 
 //GetIntArrayElements ...
-func GetIntArrayElements(env *JNIEnvironment, arr IntArray) []int {
+func GetIntArrayElements(env *JNIEnvironment, arr IntArray) []int32 {
 	len := GetArrayLength(env, Array(arr))
 	arrPtr := C.jni_get_int_array_elements(env, arr, nil)
 	array := (*[1 << 28]C.jint)(unsafe.Pointer(arrPtr))[:len:len]
 
-	result := make([]int, len)
+	result := make([]int32, len)
 	for i, e := range array {
-		result[i] = int(e)
+		result[i] = int32(e)
 	}
 	C.jni_release_int_array_elements(env, arr, arrPtr, 0)
 	return result
@@ -733,7 +733,7 @@ func GetShortArrayRegion(env *JNIEnvironment, arr ShortArray, start, len int) []
 }
 
 //GetIntArrayRegion ...
-func GetIntArrayRegion(env *JNIEnvironment, arr IntArray, start, len int) []int {
+func GetIntArrayRegion(env *JNIEnvironment, arr IntArray, start, len int) []int32 {
 	temp := make([]C.jint, len)
 
 	C.jni_get_int_array_region(
@@ -744,9 +744,9 @@ func GetIntArrayRegion(env *JNIEnvironment, arr IntArray, start, len int) []int 
 		(*C.jint)(unsafe.Pointer(&temp[0])),
 	)
 
-	result := make([]int, len)
+	result := make([]int32, len)
 	for i := range temp {
-		result[i] = int(temp[i])
+		result[i] = int32(temp[i])
 	}
 
 	return result

@@ -39,7 +39,7 @@ func (c Class) CallStaticShortMethod(id MethodID, args ...interface{}) (int16, e
 }
 
 //CallStaticIntMethod ...
-func (c Class) CallStaticIntMethod(id MethodID, args ...interface{}) (int, error) {
+func (c Class) CallStaticIntMethod(id MethodID, args ...interface{}) (int32, error) {
 	return CallStaticIntMethod(c, id, args...)
 }
 
@@ -95,7 +95,7 @@ func (c Class) GetStaticShortField(id FieldID) (int16, error) {
 }
 
 //GetStaticIntField ...
-func (c Class) GetStaticIntField(id FieldID) (int, error) {
+func (c Class) GetStaticIntField(id FieldID) (int32, error) {
 	return GetStaticIntField(c, id)
 }
 
@@ -140,7 +140,7 @@ func (c Class) SetStaticShortField(id FieldID, val int16) error {
 }
 
 //SetStaticIntField ...
-func (c Class) SetStaticIntField(id FieldID, val int) error {
+func (c Class) SetStaticIntField(id FieldID, val int32) error {
 	return SetStaticIntField(c, id, val)
 }
 

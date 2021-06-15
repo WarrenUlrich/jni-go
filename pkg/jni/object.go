@@ -36,7 +36,7 @@ func (o *Object) CallShortMethod(id MethodID, args... interface{}) (int16, error
 }
 
 //CallIntMethod ...
-func (o *Object) CallIntMethod(id MethodID, args... interface{}) (int, error) {
+func (o *Object) CallIntMethod(id MethodID, args... interface{}) (int32, error) {
 	return CallIntMethod(*o, id, args...)
 }
 
@@ -76,7 +76,7 @@ func(o *Object) GetShortField(id FieldID) (int16, error) {
 }
 
 //GetIntField ...
-func(o *Object) GetIntField(id FieldID) (int, error) {
+func(o *Object) GetIntField(id FieldID) (int32, error) {
 	return GetIntField(*o, id)
 }
 
@@ -121,7 +121,7 @@ func (o *Object) SetShortField(id FieldID, val int16) error {
 }
 
 //SetIntField ...
-func (o *Object) SetIntField(id FieldID, val int) error {
+func (o *Object) SetIntField(id FieldID, val int32) error {
 	return SetIntField(*o, id, val)
 }
 

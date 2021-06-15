@@ -245,7 +245,7 @@ func CallShortMethod(obj Object, id MethodID, args ...interface{}) (int16, error
 }
 
 //CallIntMethod ...
-func CallIntMethod(obj Object, id MethodID, args ...interface{}) (int, error) {
+func CallIntMethod(obj Object, id MethodID, args ...interface{}) (int32, error) {
 	localEnv, err := getThreadLocalEnvironment()
 	if err != nil {
 		return 0, err
@@ -405,7 +405,7 @@ func CallNonVirtualShortMethod(obj Object, cls Class, id MethodID, args ...inter
 }
 
 //CallNonVirtualIntMethod ...
-func CallNonVirtualIntMethod(obj Object, cls Class, id MethodID, args ...interface{}) (int, error) {
+func CallNonVirtualIntMethod(obj Object, cls Class, id MethodID, args ...interface{}) (int32, error) {
 	localEnv, err := getThreadLocalEnvironment()
 	if err != nil {
 		return 0, err
@@ -565,7 +565,7 @@ func GetShortField(obj Object, id FieldID) (int16, error) {
 }
 
 //GetIntField ...
-func GetIntField(obj Object, id FieldID) (int, error) {
+func GetIntField(obj Object, id FieldID) (int32, error) {
 	localEnv, err := getThreadLocalEnvironment()
 	if err != nil {
 		return 0, err
@@ -707,7 +707,7 @@ func SetShortField(obj Object, id FieldID, val int16) error {
 
 
 //SetIntField ...
-func SetIntField(obj Object, id FieldID, val int) error {
+func SetIntField(obj Object, id FieldID, val int32) error {
 	localEnv, err := getThreadLocalEnvironment()
 	if err != nil {
 		return err
@@ -876,7 +876,7 @@ func CallStaticShortMethod(cls Class, id MethodID, args ...interface{}) (int16, 
 }
 
 //CallStaticIntMethod ...
-func CallStaticIntMethod(cls Class, id MethodID, args ...interface{}) (int, error) {
+func CallStaticIntMethod(cls Class, id MethodID, args ...interface{}) (int32, error) {
 	localEnv, err := getThreadLocalEnvironment()
 	if err != nil {
 		return 0, err
@@ -1032,7 +1032,7 @@ func GetStaticShortField(cls Class, id FieldID) (int16, error) {
 }
 
 //GetStaticIntField ...
-func GetStaticIntField(cls Class, id FieldID) (int, error) {
+func GetStaticIntField(cls Class, id FieldID) (int32, error) {
 	localEnv, err := getThreadLocalEnvironment()
 	if err != nil {
 		return 0, err
@@ -1172,7 +1172,7 @@ func SetStaticShortField(cls Class, id FieldID, val int16) error {
 }
 
 //SetStaticIntField ...
-func SetStaticIntField(cls Class, id FieldID, val int) error {
+func SetStaticIntField(cls Class, id FieldID, val int32) error {
 	localEnv, err := getThreadLocalEnvironment()
 	if err != nil {
 		return err
